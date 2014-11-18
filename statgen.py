@@ -12,11 +12,11 @@ import sys
 from xml.sax.saxutils import unescape
 import re
 
-SKYPE_DB = '/Users/leif/Library/Application Support/Skype/eurleif/main.db'
+SKYPE_DB = 'C:/Users/Robin/AppData/Roaming/Skype/armar.robin/main.db'
 CHAT_NAME = '19:78317a8dceb646ff9d62ea2e31b4decb@thread.skype'
-NEOCITIES_USERNAME = 'intpstats'
+NEOCITIES_USERNAME = 'intpstatsarmar'
 NEOCITIES_PASSWORD = sys.argv[1] if len(sys.argv) > 1 else None
-URL = 'http://intpstats.neocities.org'
+URL = 'http://intpstatsarmar.neocities.org'
 SkypeMessage = namedtuple('SkypeMessage', 'timestamp author message edited'.split())
 
 template_env = jinja2.Environment(loader=jinja2.PackageLoader('intpstatgen', 'templates'))
