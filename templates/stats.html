@@ -1,8 +1,7 @@
 <!doctype html>
 <title>INTP stats!</title>
 <meta name="viewport" content="initial-scale=1.0">
-<script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/c3/0.4.0/c3.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.4.1/canvas.min.js"></script>
 <script>
 function addCats(){
     var titles = document.getElementsByTagName("H2");
@@ -31,9 +30,9 @@ html {
 <h1>INTP stats! </h1>
 <p>Last updated: {{ last_updated }} &bull; Message count: {{ msg_count }} &bull; Sauce: <a href="https://github.com/leifkb/intpstatgen">GitHub</a>  <a href="#" onclick="addCats();">Cats</a></p>
 <p><strong>Info:</strong> All dates/times are UTC. These stats count an uninterrupted sequence of messages from the same author as a single message. Someone is considered "active" on a given day if they send at least one message that day.</p> 
-<div id="msgchart">
+<div id="msg">
 <h2>Messages and active people over time</h2>
-<div class="chart"></div>
+<div id="msgchart"></div>
 </div>
 <div id="userchart">
 <h2>Messages by author</h2>
@@ -116,13 +115,40 @@ html {
 
 <script>
 var date_labels = {{ date_labels|tojson }};
+date_labels = date_labels.map(function (d){return new Date(d)})
 var msgs_by_day = {{ msgs_by_day|tojson }};
 var authors_by_day = {{ authors_by_day|tojson }};
 var minutes_of_silence = {{ minutes_of_silence|tojson }};
-var is_mobile = /mobile|kindle|silk\/|symbian|nokia|android|nintendobrowser/i.test(navigator.userAgent);
+
+function mapToXY(xArray, yArray) {
+  var rv = [];
+  for (var i = 0; i < xArray.length; ++i){
+    var obj = {}
+    obj['x'] = xArray[i];
+    obj['y'] = yArray[i];
+    rv.push(obj);
+    }
+  return rv;
+}
+
 var drawList = [
     function() {
-        c3.generate({
+    var chart = new CanvasJS.Chart("msgchart", {
+              data: [
+              {
+                  type: "line",
+                  dataPoints:  mapToXY(date_labels, authors_by_day)
+              },
+              {
+                  type: "line",
+                  dataPoints:  mapToXY(date_labels, msgs_by_day)
+              }
+              ]
+          });
+ 
+          chart.render();
+        
+        /*c3.generate({
             bindto: '#msgchart .chart',
             data: {
                 x: 'x',
@@ -145,8 +171,8 @@ var drawList = [
                 y2: {show: true}
             },
             interaction: {enabled: !is_mobile}
-        });
-    },
+        });*/
+    }/*,
     function() {
         c3.generate({
             bindto: '#userchart .chart',
@@ -530,7 +556,7 @@ var drawList = [
             },
             interaction: {enabled: !is_mobile}
         });
-    }
+    }*/
 ];
 setTimeout(function loop() {
     var f = drawList.shift()
