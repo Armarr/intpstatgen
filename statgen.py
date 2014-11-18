@@ -33,7 +33,9 @@ def open_db():
         try:
             db = sqlite3.connect(f.name)
         finally:
-            os.unlink(f.name)
+            None
+            #os.unlink(f.name)
+            #TODO: ask Leif what the heck this is, deleting the db file you're going to read from next?
         return db
 
 def read_msgs():
@@ -356,6 +358,7 @@ if __name__ == '__main__':
         requests.post('https://neocities.org/api/upload', auth=(NEOCITIES_USERNAME, NEOCITIES_PASSWORD), files={'index.html': f})
         url = URL
     else:
+        #TODO: make OS independent
         with open('/tmp/intp.html', 'w') as f:
             f.write(page)
         url = 'file:///tmp/intp.html'
