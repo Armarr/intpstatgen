@@ -134,13 +134,27 @@ function mapToXY(xArray, yArray) {
 var drawList = [
     function() {
     var chart = new CanvasJS.Chart("msgchart", {
+              axisY: {
+                title: "Messages"
+              },
+              axisY2: {
+                title: "People"
+              },
+              legend: {
+                verticalAlign: "bottom"
+              },
               data: [
               {
+                  showInLegend: true,
                   type: "line",
+                  legendText: "People",
+                  axisYType: "secondary",
                   dataPoints:  mapToXY(date_labels, authors_by_day)
               },
               {
+                  showInLegend: true,
                   type: "line",
+                  legendText: "Messages",
                   dataPoints:  mapToXY(date_labels, msgs_by_day)
               }
               ]
