@@ -19,7 +19,7 @@ NEOCITIES_PASSWORD = sys.argv[1] if len(sys.argv) > 1 else None
 URL = 'http://intpstatsarmar.neocities.org'
 SkypeMessage = namedtuple('SkypeMessage', 'timestamp author message edited'.split())
 
-template_env = jinja2.Environment(loader=jinja2.PackageLoader('intpstatgen', 'templates'))
+template_env = jinja2.Environment(loader=jinja2.PackageLoader('statgen', 'templates'))
 template_env.filters['tojson'] = json.dumps
 
 def extract_xml_text(data):
